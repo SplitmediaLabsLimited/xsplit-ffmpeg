@@ -1,0 +1,67 @@
+# workflows/build_and_publish_ffmpeg.yml
+#
+# Build & publish ffmpeg
+
+name: "Build & publish ffmpeg"
+
+on:
+  workflow_dispatch:
+    branches:
+      - main
+    paths-ignore:
+      - README.md
+
+jobs:
+  # Build and publish FFmpeg
+  build-and-publish-ffmpeg:
+    name: ${{ matrix.config.name }}
+    runs-on: ${{ matrix.config.os }}
+    
+    strategy:
+      matrix:
+        config:
+          - name: "Windows"
+            os: windows-2019 # Same OS as Windows 10
+#          - name: "macOS (x64)"
+#            os: macos-11 # Xcode and Homebrew come preinstalled
+#          - name: "macOS (arm64)"
+#            os: macos-11 # Xcode and Homebrew come preinstalled
+#          - name: "Ubuntu Linux"
+#            os: ubuntu-20.04
+
+    env:
+      windows-tar-name: whist-windows-ffmpeg-shared-lib.tar.gz
+      windows-build-folder: Windows
+#      macos-x64-tar-name: whist-macos-x64-ffmpeg-shared-lib.tar.gz
+#      macos-arm64-tar-name: whist-macos-arm64-ffmpeg-shared-lib.tar.gz
+#      macos-build-folder: Darwin
+#      linux-tar-name: whist-linux-ffmpeg-shared-lib.tar.gz
+#      linux-build-folder: Linux
+#      headers-tar-name: whist-ffmpeg-headers.tar.gz
+#      headers-build-folder: include
+#      s3-bucket-region: us-east-1
+#      s3-bucket-uri: s3://whist-protocol-dependencies
+
+
+    steps:
+    ################################# CONFIG STEPS START ##############################
+
+#      - name: On macOS and Ubuntu Linux, Checkout this Git Repository Directly
+#        if: runner.os == 'macOS' || runner.os == 'Linux'
+#        uses: actions/checkout@v3
+
+      # media-autobuild_suite needs to be directly in the C:\ drive, as it is very finicky with paths
+      - name: On Windows, Git Clone whisthq/FFmpeg and whisthq/media-autobuild_suite (FFmpeg Windows Compilation Helper Tools) to C:\
+        if: runner.os == 'Windows'
+        shell: cmd
+        run: |
+          REM first, clone m-ab-s/media-autobuild_suite to C:\media-autobuild_suite
+          REM note that this will use upstream FFmpeg, which is not the same as the Whist FFmpeg (this is only for Windows, we need to
+          REM move macOS and Linux to also use upstream FFmpeg eventually, for consistency)
+          git clone https://github.com/m-ab-s/media-autobuild_suite C:\media-autobuild_suite
+
+          REM then, clone whisthq/FFmpeg to C:\media-autobuild_suite\build\ffmpeg
+          git clone "https://github.com/FFmpeg/FFmpeg.git" C:\media-autobuild_suite\build\ffmpeg
+
+
+
