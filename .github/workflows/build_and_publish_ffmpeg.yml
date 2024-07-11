@@ -51,7 +51,7 @@ jobs:
 #        uses: actions/checkout@v3
 
       # media-autobuild_suite needs to be directly in the C:\ drive, as it is very finicky with paths
-      - name: On Windows, Git Clone whisthq/FFmpeg and whisthq/media-autobuild_suite (FFmpeg Windows Compilation Helper Tools) to C:\
+      - name: On Windows, Git Clone FFmpeg and media-autobuild_suite (FFmpeg Windows Compilation Helper Tools) to C:\
         if: runner.os == 'Windows'
         shell: cmd
         run: |
@@ -60,8 +60,25 @@ jobs:
           REM move macOS and Linux to also use upstream FFmpeg eventually, for consistency)
           git clone https://github.com/m-ab-s/media-autobuild_suite C:\media-autobuild_suite
 
-          REM then, clone whisthq/FFmpeg to C:\media-autobuild_suite\build\ffmpeg
+          REM then, clone FFmpeg to C:\media-autobuild_suite\build\ffmpeg
           git clone "https://github.com/FFmpeg/FFmpeg.git" C:\media-autobuild_suite\build\ffmpeg
 
+          REM clone xsplit-ffmpeg repo, we need xsplit-ffmpeg/.github/workflows/helpers
+          git clone "https://github.com/SplitmediaLabsLimited/xsplit-ffmpeg.git" C:\media-autobuild_suite\build\xsplit-ffmpeg
+
+
+      - name: On Windows, Move Preconfigured media-autobuild_suite Config Files Over to C:\media-autobuild_suite/build
+      if: runner.os == 'Windows'
+      working-directory: C:\media-autobuild_suite
+      shell: bash --noprofile --norc -eo pipefail {0}
+      run: |
+        cp \
+        build/xsplit-ffmpeg/.github/workflows/helpers/media-autobuild_suite.ini \
+        build/xsplit-ffmpeg/.github/workflows/helpers/ffmpeg_options.txt \
+        build/xsplit-ffmpeg/.github/workflows/helpers/mpv_options.txt \
+        build/xsplit-ffmpeg/.github/workflows/helpers/bash.sh \
+        build/xsplit-ffmpeg/.github/workflows/helpers/mingw.sh \
+        build/xsplit-ffmpeg/.github/workflows/helpers/pacman.sh \
+        build/
 
 
