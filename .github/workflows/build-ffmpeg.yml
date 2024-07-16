@@ -105,17 +105,6 @@ jobs:
             shell: msys2 {0}
             cmake_generator: MSYS Makefiles
             ffmpeg_extras: >-
-              --enable-amf
-              --enable-cuda
-              --enable-d3d11va
-              --enable-encoder=h264_amf,hevc_amf,av1_amf
-              --enable-encoder=h264_mf,hevc_mf
-              --enable-encoder=h264_nvenc,hevc_nvenc,av1_nvenc
-              --enable-encoder=h264_qsv,hevc_qsv,av1_qsv
-              --enable-ffnvcodec
-              --enable-libvpl
-              --enable-nvenc
-              --enable-mediafoundation
     runs-on: ${{ matrix.os }}
     defaults:
       run:
@@ -466,26 +455,26 @@ jobs:
 #          make install
 #          echo "::endgroup::"
 
-      - name: nvenc
-        id: nvenc
-        if: ${{ matrix.os_type != 'macos' }}
-        env:
-          root_path: ${{ steps.root.outputs.root_path }}
-        working-directory: ffmpeg_sources/nv-codec-headers
-        # https://trac.ffmpeg.org/wiki/HWAccelIntro#NVENC
-        run: |
-          echo "::group::patch Makefile"
-          # allow `PREFIX` to be overridden
-          sed -i 's/PREFIX =/PREFIX ?=/g' Makefile
-          echo "::endgroup::"
-
-          echo "::group::make"
-          PREFIX=$root_path/ffmpeg_build make -j$(nproc || sysctl -n hw.logicalcpu)
-          echo "::endgroup::"
-
-          echo "::group::make install"
-          PREFIX=$root_path/ffmpeg_build make install
-          echo "::endgroup::"
+#      - name: nvenc
+#        id: nvenc
+#        if: ${{ matrix.os_type != 'macos' }}
+#        env:
+#          root_path: ${{ steps.root.outputs.root_path }}
+#        working-directory: ffmpeg_sources/nv-codec-headers
+#        # https://trac.ffmpeg.org/wiki/HWAccelIntro#NVENC
+#        run: |
+#          echo "::group::patch Makefile"
+#          # allow `PREFIX` to be overridden
+#          sed -i 's/PREFIX =/PREFIX ?=/g' Makefile
+#          echo "::endgroup::"
+#
+#          echo "::group::make"
+#          PREFIX=$root_path/ffmpeg_build make -j$(nproc || sysctl -n hw.logicalcpu)
+#          echo "::endgroup::"
+#
+#          echo "::group::make install"
+#          PREFIX=$root_path/ffmpeg_build make install
+#          echo "::endgroup::"
 
       - name: ffmpeg
         env:
