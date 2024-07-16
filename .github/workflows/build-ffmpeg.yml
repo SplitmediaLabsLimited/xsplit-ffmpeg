@@ -535,13 +535,58 @@ jobs:
             --extra-ldflags="-L$root_path/ffmpeg_build/lib" \
             --extra-libs="-lpthread -lm" \
             --bindir="$root_path/bin" \
-            --disable-all \
-            --disable-autodetect \
-            --disable-iconv \
-            --enable-avcodec \
+            --disable-everything \
+            --enable-nonfree \
             --enable-gpl \
             --enable-static \
+            --disable-shared \
+            --disable-devices \
+            --disable-filters \
+            --disable-avdevice \
+            --disable-postproc \
             --enable-swscale \
+            --enable-decoder=aac \
+            --enable-decoder=pcm* \
+            --enable-decoder=h264 \
+            --enable-decoder=png \
+            --enable-decoder=bmp \
+            --enable-encoder=libopus \
+            --enable-encoder=aac \
+            --enable-encoder=pcm* \
+            --enable-encoder=gif \
+            --enable-encoder=png \
+            --enable-encoder=bmp \
+            --enable-demuxer=mov \
+            --enable-demuxer=aac \
+            --enable-demuxer=ffmetadata \
+            --enable-demuxer=image2 \
+            --enable-demuxer=wav \
+            --enable-muxer=mp4 \
+            --enable-muxer=m4a \
+            --enable-muxer=mov \
+            --enable-muxer=aac \
+            --enable-muxer=ogg \
+            --enable-muxer=pcm* \
+            --enable-muxer=wav \
+            --enable-muxer=ffmetadata \
+            --enable-muxer=gif \
+            --enable-muxer=image2 \
+            --enable-muxer=rawvideo \
+            --enable-bsf=h264_mp4toannexb \
+            --enable-bsf=aac_adtstoasc \
+            --enable-parser=aac \
+            --enable-parser=h264 \
+            --enable-filter=metadata \
+            --enable-filter=aresample \
+            --enable-filter=amix \
+            --enable-filter=scale \
+            --enable-filter=palettegen \
+            --enable-filter=paletteuse \
+            --enable-filter=format \
+            --enable-filter=fps \
+            --enable-filter=split \
+            --enable-protocol=file \
+            --enable-libopus \
             --pkg-config=pkg-config \
             ${{ matrix.ffmpeg_extras }} \
             || config_error=true
