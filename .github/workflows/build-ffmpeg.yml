@@ -524,7 +524,7 @@ jobs:
             --extra-cflags="-I$root_path/ffmpeg_build/include" \
             --extra-ldflags="-L$root_path/ffmpeg_build/lib" \
             --extra-libs="-lpthread -lm" \
-            --bindir="$root_path/bin" \
+            --bindir="$root_path/ffmpeg_build/bin" \
             --disable-everything \
             --enable-nonfree \
             --enable-gpl \
