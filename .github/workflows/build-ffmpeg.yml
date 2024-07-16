@@ -285,6 +285,7 @@ jobs:
             mingw-w64-ucrt-x86_64-gcc
             mingw-w64-ucrt-x86_64-onevpl
             mingw-w64-ucrt-x86_64-nasm
+            mingw-w64-ucrt-x86_64-opus
 
       - name: Initialize Submodules
         # libx265 has issues when using the recursive method of the first checkout action
