@@ -329,141 +329,141 @@ jobs:
           mkdir -p ./ffmpeg_build/include/AMF
           cp -av "./ffmpeg_sources/AMF/amf/public/include/." "./ffmpeg_build/include/AMF"
 
-      - name: av1
-        working-directory: ffmpeg_sources/SVT-AV1/Build
-        env:
-          root_path: ${{ steps.root.outputs.root_path }}
-          CCPREFIX: ${{ steps.cross.outputs.CCPREFIX }}
-        run: |
-          echo "::group::configure extra flags for cross compilation"
-          extra_configure=""
-          if [[ ${{ matrix.arch }} != "x86_64" ]]; then
-            if [[ ${{ matrix.os_type }} == "macos" ]]; then
-              export CFLAGS="${{ steps.cross.outputs.CFLAGS }}"
-              export CXXFLAGS="${{ steps.cross.outputs.CXXFLAGS }}"
-              export LDFLAGS="${{ steps.cross.outputs.LDFLAGS }}"
-            fi
-            extra_configure=$(cat <<- VAREOF
-              -DCMAKE_TOOLCHAIN_FILE=${{ steps.cross.outputs.CMAKE_TOOLCHAIN_FILE }}
-          VAREOF
-          )
-          fi
-          echo "$extra_configure"
-          echo "::endgroup::"
-
-          echo "::group::configure"
-          PATH="$root_path/bin:$PATH" cmake -G "${{ matrix.cmake_generator }}" \
-            $extra_configure \
-            -DCMAKE_INSTALL_PREFIX="$root_path/ffmpeg_build" \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DBUILD_APPS=OFF \
-            -DBUILD_DEC=OFF \
-            -DENABLE_AVX512=ON \
-            -DBUILD_SHARED_LIBS=OFF \
-            ..
-          echo "::endgroup::"
-
-          echo "::group::make"
-          PATH="$root_path/bin:$PATH" make -j$(nproc || sysctl -n hw.logicalcpu)
-          echo "::endgroup::"
-
-          echo "::group::make install"
-          make install
-          echo "::endgroup::"
-
-      - name: libx264
-        env:
-          root_path: ${{ steps.root.outputs.root_path }}
-          CCPREFIX: ${{ steps.cross.outputs.CCPREFIX }}
-        working-directory: ffmpeg_sources/x264
-        run: |
-          echo "::group::configure options"
-          ./configure --help || true  # this command has a non zero exit status, but we should continue anyway
-          echo "::endgroup::"
-
-          echo "::group::configure extra flags for cross compilation"
-          extra_configure=""
-          if [[ ${{ matrix.os_type }} == "linux" && ${{ matrix.arch }} != "x86_64" ]]; then
-            extra_configure=$(cat <<- VAREOF
-              --host=${{ matrix.arch }}-${{ matrix.os_type }}
-              --cross-prefix=${CCPREFIX}
-          VAREOF
-          )
-          elif [[ ${{ matrix.os_type }} == "macos" && ${{ matrix.arch }} != "x86_64" ]]; then
-            export CC="clang"
-            export CFLAGS="${{ steps.cross.outputs.CFLAGS }}"
-            extra_configure=$(cat <<- VAREOF
-              --host=${{ matrix.arch }}-darwin
-          VAREOF
-          )
-          fi
-          echo "$extra_configure"
-          echo "::endgroup::"
-
-          echo "::group::configure"
-          PATH="$root_path/bin:$PATH" \
-            PKG_CONFIG_PATH="$root_path/ffmpeg_build/lib/pkgconfig" \
-            ./configure \
-            $extra_configure \
-            --prefix="$root_path/ffmpeg_build" \
-            --bindir="$root_path/bin" \
-            --disable-cli \
-            --enable-static
-          echo "::endgroup::"
-
-          echo "::group::make"
-          PATH="$root_path/bin:$PATH" make -j$(nproc || sysctl -n hw.logicalcpu)
-          echo "::endgroup::"
-
-          echo "::group::make install"
-          make install
-          echo "::endgroup::"
-
-      - name: libx265
-        env:
-          root_path: ${{ steps.root.outputs.root_path }}
-          CCPREFIX: ${{ steps.cross.outputs.CCPREFIX }}
-        working-directory: ffmpeg_sources/x265_git
-        run: |
-          echo "::group::configure extra flags for cross compilation"
-
-          # not currently supported in `aarch64`
-          extra_configure="-DENABLE_HDR10_PLUS=1"
-          if [[ ${{ matrix.os_type }} == "linux" && ${{ matrix.arch }} != "x86_64" ]]; then
-            if [[ ${{ matrix.arch }} == "powerpc64le" ]]; then
-              extra_configure="-DCMAKE_TOOLCHAIN_FILE=${{ steps.cross.outputs.CMAKE_TOOLCHAIN_FILE }}"
-            else
-              extra_configure="-DCMAKE_TOOLCHAIN_FILE=build/${{ matrix.arch }}-${{ matrix.os_type }}/crosscompile.cmake"
-            fi
-          elif [[ ${{ matrix.os_type }} == "macos" && ${{ matrix.arch }} != "x86_64" ]]; then
-            export CFLAGS="${{ steps.cross.outputs.CFLAGS }}"
-            export CXXFLAGS="${{ steps.cross.outputs.CXXFLAGS }}"
-            extra_configure=$(cat <<- VAREOF
-              -DENABLE_ASSEMBLY=0
-              -DCMAKE_TOOLCHAIN_FILE=${{ steps.cross.outputs.CMAKE_TOOLCHAIN_FILE }}
-          VAREOF
-          )
-          fi
-          echo "$extra_configure"
-          echo "::endgroup::"
-
-          echo "::group::configure"
-          PATH="$root_path/bin:$PATH" cmake -G "${{ matrix.cmake_generator }}" \
-            $extra_configure \
-            -DCMAKE_INSTALL_PREFIX="$root_path/ffmpeg_build" \
-            -DENABLE_CLI=OFF \
-            -DENABLE_SHARED=OFF \
-            -DSTATIC_LINK_CRT=ON \
-            ./source
-          echo "::endgroup::"
-
-          echo "::group::make"
-          PATH="$root_path/bin:$PATH" make -j$(nproc || sysctl -n hw.logicalcpu)
-          echo "::endgroup::"
-
-          echo "::group::make install"
-          make install
-          echo "::endgroup::"
+#      - name: av1
+#        working-directory: ffmpeg_sources/SVT-AV1/Build
+#        env:
+#          root_path: ${{ steps.root.outputs.root_path }}
+#          CCPREFIX: ${{ steps.cross.outputs.CCPREFIX }}
+#        run: |
+#          echo "::group::configure extra flags for cross compilation"
+#          extra_configure=""
+#          if [[ ${{ matrix.arch }} != "x86_64" ]]; then
+#            if [[ ${{ matrix.os_type }} == "macos" ]]; then
+#              export CFLAGS="${{ steps.cross.outputs.CFLAGS }}"
+#              export CXXFLAGS="${{ steps.cross.outputs.CXXFLAGS }}"
+#              export LDFLAGS="${{ steps.cross.outputs.LDFLAGS }}"
+#            fi
+#            extra_configure=$(cat <<- VAREOF
+#              -DCMAKE_TOOLCHAIN_FILE=${{ steps.cross.outputs.CMAKE_TOOLCHAIN_FILE }}
+#          VAREOF
+#          )
+#          fi
+#          echo "$extra_configure"
+#          echo "::endgroup::"
+#
+#          echo "::group::configure"
+#          PATH="$root_path/bin:$PATH" cmake -G "${{ matrix.cmake_generator }}" \
+#            $extra_configure \
+#            -DCMAKE_INSTALL_PREFIX="$root_path/ffmpeg_build" \
+#            -DCMAKE_BUILD_TYPE=Release \
+#            -DBUILD_APPS=OFF \
+#            -DBUILD_DEC=OFF \
+#            -DENABLE_AVX512=ON \
+#            -DBUILD_SHARED_LIBS=OFF \
+#            ..
+#          echo "::endgroup::"
+#
+#          echo "::group::make"
+#          PATH="$root_path/bin:$PATH" make -j$(nproc || sysctl -n hw.logicalcpu)
+#          echo "::endgroup::"
+#
+#          echo "::group::make install"
+#          make install
+#          echo "::endgroup::"
+#
+#      - name: libx264
+#        env:
+#          root_path: ${{ steps.root.outputs.root_path }}
+#          CCPREFIX: ${{ steps.cross.outputs.CCPREFIX }}
+#        working-directory: ffmpeg_sources/x264
+#        run: |
+#          echo "::group::configure options"
+#          ./configure --help || true  # this command has a non zero exit status, but we should continue anyway
+#          echo "::endgroup::"
+#
+#          echo "::group::configure extra flags for cross compilation"
+#          extra_configure=""
+#          if [[ ${{ matrix.os_type }} == "linux" && ${{ matrix.arch }} != "x86_64" ]]; then
+#            extra_configure=$(cat <<- VAREOF
+#              --host=${{ matrix.arch }}-${{ matrix.os_type }}
+#              --cross-prefix=${CCPREFIX}
+#          VAREOF
+#          )
+#          elif [[ ${{ matrix.os_type }} == "macos" && ${{ matrix.arch }} != "x86_64" ]]; then
+#            export CC="clang"
+#            export CFLAGS="${{ steps.cross.outputs.CFLAGS }}"
+#            extra_configure=$(cat <<- VAREOF
+#              --host=${{ matrix.arch }}-darwin
+#          VAREOF
+#          )
+#          fi
+#          echo "$extra_configure"
+#          echo "::endgroup::"
+#
+#          echo "::group::configure"
+#          PATH="$root_path/bin:$PATH" \
+#            PKG_CONFIG_PATH="$root_path/ffmpeg_build/lib/pkgconfig" \
+#            ./configure \
+#            $extra_configure \
+#            --prefix="$root_path/ffmpeg_build" \
+#            --bindir="$root_path/bin" \
+#            --disable-cli \
+#            --enable-static
+#          echo "::endgroup::"
+#
+#          echo "::group::make"
+#          PATH="$root_path/bin:$PATH" make -j$(nproc || sysctl -n hw.logicalcpu)
+#          echo "::endgroup::"
+#
+#          echo "::group::make install"
+#          make install
+#          echo "::endgroup::"
+#
+#      - name: libx265
+#        env:
+#          root_path: ${{ steps.root.outputs.root_path }}
+#          CCPREFIX: ${{ steps.cross.outputs.CCPREFIX }}
+#        working-directory: ffmpeg_sources/x265_git
+#        run: |
+#          echo "::group::configure extra flags for cross compilation"
+#
+#          # not currently supported in `aarch64`
+#          extra_configure="-DENABLE_HDR10_PLUS=1"
+#          if [[ ${{ matrix.os_type }} == "linux" && ${{ matrix.arch }} != "x86_64" ]]; then
+#            if [[ ${{ matrix.arch }} == "powerpc64le" ]]; then
+#              extra_configure="-DCMAKE_TOOLCHAIN_FILE=${{ steps.cross.outputs.CMAKE_TOOLCHAIN_FILE }}"
+#            else
+#              extra_configure="-DCMAKE_TOOLCHAIN_FILE=build/${{ matrix.arch }}-${{ matrix.os_type }}/crosscompile.cmake"
+#            fi
+#          elif [[ ${{ matrix.os_type }} == "macos" && ${{ matrix.arch }} != "x86_64" ]]; then
+#            export CFLAGS="${{ steps.cross.outputs.CFLAGS }}"
+#            export CXXFLAGS="${{ steps.cross.outputs.CXXFLAGS }}"
+#            extra_configure=$(cat <<- VAREOF
+#              -DENABLE_ASSEMBLY=0
+#              -DCMAKE_TOOLCHAIN_FILE=${{ steps.cross.outputs.CMAKE_TOOLCHAIN_FILE }}
+#          VAREOF
+#          )
+#          fi
+#          echo "$extra_configure"
+#          echo "::endgroup::"
+#
+#          echo "::group::configure"
+#          PATH="$root_path/bin:$PATH" cmake -G "${{ matrix.cmake_generator }}" \
+#            $extra_configure \
+#            -DCMAKE_INSTALL_PREFIX="$root_path/ffmpeg_build" \
+#            -DENABLE_CLI=OFF \
+#            -DENABLE_SHARED=OFF \
+#            -DSTATIC_LINK_CRT=ON \
+#            ./source
+#          echo "::endgroup::"
+#
+#          echo "::group::make"
+#          PATH="$root_path/bin:$PATH" make -j$(nproc || sysctl -n hw.logicalcpu)
+#          echo "::endgroup::"
+#
+#          echo "::group::make install"
+#          make install
+#          echo "::endgroup::"
 
       - name: nvenc
         id: nvenc
