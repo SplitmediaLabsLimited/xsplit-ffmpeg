@@ -576,44 +576,44 @@ jobs:
 #            --enable-encoder=libx264,libx265 \
 
           
-      - name: cbs
-        env:
-          root_path: ${{ steps.root.outputs.root_path }}
-        run: |
-          mkdir -p build
-          cd build
-
-          echo "::group::configure extra flags for cross compilation"
-          extra_configure=""
-          if [[ ${{ matrix.arch }} != "x86_64" ]]; then
-            if [[ ${{ matrix.os_type }} == "macos" ]]; then
-              export CFLAGS="${{ steps.cross.outputs.CFLAGS }}"
-              export CXXFLAGS="${{ steps.cross.outputs.CXXFLAGS }}"
-              export LDFLAGS="${{ steps.cross.outputs.LDFLAGS }}"
-            fi
-            extra_configure=$(cat <<- VAREOF
-              -DCMAKE_TOOLCHAIN_FILE=${{ steps.cross.outputs.CMAKE_TOOLCHAIN_FILE }}
-          VAREOF
-          )
-          fi
-          echo "$extra_configure"
-          echo "::endgroup::"
-
-          echo "::group::configure"
-          PATH="$root_path/bin:$PATH" cmake -G "${{ matrix.cmake_generator }}" \
-            $extra_configure \
-            -DCMAKE_INSTALL_PREFIX="$root_path/ffmpeg_build" \
-            -DFFMPEG_CBS=ON \
-            ..
-          echo "::endgroup::"
-
-          echo "::group::make"
-          PATH="$root_path/bin:$PATH" make -j$(nproc || sysctl -n hw.logicalcpu)
-          echo "::endgroup::"
-
-          echo "::group::make install"
-          make install
-          echo "::endgroup::"
+#      - name: cbs
+#        env:
+#          root_path: ${{ steps.root.outputs.root_path }}
+#        run: |
+#          mkdir -p build
+#          cd build
+#
+#          echo "::group::configure extra flags for cross compilation"
+#          extra_configure=""
+#          if [[ ${{ matrix.arch }} != "x86_64" ]]; then
+#            if [[ ${{ matrix.os_type }} == "macos" ]]; then
+#              export CFLAGS="${{ steps.cross.outputs.CFLAGS }}"
+#              export CXXFLAGS="${{ steps.cross.outputs.CXXFLAGS }}"
+#              export LDFLAGS="${{ steps.cross.outputs.LDFLAGS }}"
+#            fi
+#            extra_configure=$(cat <<- VAREOF
+#              -DCMAKE_TOOLCHAIN_FILE=${{ steps.cross.outputs.CMAKE_TOOLCHAIN_FILE }}
+#          VAREOF
+#          )
+#          fi
+#          echo "$extra_configure"
+#          echo "::endgroup::"
+#
+#          echo "::group::configure"
+#          PATH="$root_path/bin:$PATH" cmake -G "${{ matrix.cmake_generator }}" \
+#            $extra_configure \
+#            -DCMAKE_INSTALL_PREFIX="$root_path/ffmpeg_build" \
+#            -DFFMPEG_CBS=ON \
+#            ..
+#          echo "::endgroup::"
+#
+#          echo "::group::make"
+#          PATH="$root_path/bin:$PATH" make -j$(nproc || sysctl -n hw.logicalcpu)
+#          echo "::endgroup::"
+#
+#          echo "::group::make install"
+#          make install
+#          echo "::endgroup::"
 
       - name: Cleanup
         run: |
