@@ -81,7 +81,7 @@ jobs:
               --enable-vaapi
           - name: Darwin-x86_64
             os_type: macos
-            os: macos-11
+            os: macos-14
             arch: x86_64
             shell: bash
             cmake_generator: Unix Makefiles  # should be `Xcode` but that fails
@@ -90,7 +90,7 @@ jobs:
               --enable-videotoolbox
           - name: Darwin-arm64
             os_type: macos
-            os: macos-11
+            os: macos-14
             arch: aarch64
             shell: bash
             cmake_generator: Unix Makefiles  # should be `Xcode` but that fails
