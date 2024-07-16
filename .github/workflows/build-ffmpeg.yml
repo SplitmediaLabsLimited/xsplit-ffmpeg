@@ -539,12 +539,7 @@ jobs:
             --disable-autodetect \
             --disable-iconv \
             --enable-avcodec \
-            --enable-encoder=libsvtav1 \
-            --enable-encoder=libx264,libx265 \
             --enable-gpl \
-            --enable-libsvtav1 \
-            --enable-libx264 \
-            --enable-libx265 \
             --enable-static \
             --enable-swscale \
             --pkg-config=pkg-config \
@@ -574,6 +569,13 @@ jobs:
           cp ./COPYING.GPLv2 $root_path/ffmpeg_build/LICENSE
           echo "::endgroup::"
 
+#            --enable-encoder=libsvtav1 \
+#            --enable-libsvtav1 \
+#            --enable-libx264 \
+#            --enable-libx265 \
+#            --enable-encoder=libx264,libx265 \
+
+          
       - name: cbs
         env:
           root_path: ${{ steps.root.outputs.root_path }}
