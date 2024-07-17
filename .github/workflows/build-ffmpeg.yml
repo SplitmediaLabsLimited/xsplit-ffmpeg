@@ -321,6 +321,34 @@ jobs:
           mkdir -p ./ffmpeg_build/include/AMF
           cp -av "./ffmpeg_sources/AMF/amf/public/include/." "./ffmpeg_build/include/AMF"
 
+      - name: libopus
+        env:
+          root_path: ${{ steps.root.outputs.root_path }}
+          CCPREFIX: ${{ steps.cross.outputs.CCPREFIX }}
+        working-directory: ffmpeg_sources/opus
+        run: |
+          echo "::group::configure autogen"
+          ./autogen.sh
+          echo "::endgroup::"
+
+          echo "::group::configure"
+          PATH="$root_path/bin:$PATH" \
+            PKG_CONFIG_PATH="$root_path/ffmpeg_build/lib/pkgconfig" \
+            ./configure \
+            --prefix="$root_path/ffmpeg_build" \
+            --bindir="$root_path/ffmpeg_build/bin" \
+            --enable-static
+          echo "::endgroup::"
+
+          echo "::group::make"
+          PATH="$root_path/ffmpeg_build/bin:$PATH" make -j$(nproc || sysctl -n hw.logicalcpu)
+          echo "::endgroup::"
+
+          echo "::group::make install"
+          make install
+          echo "::endgroup::"
+          
+          
 #      - name: av1
 #        working-directory: ffmpeg_sources/SVT-AV1/Build
 #        env:
