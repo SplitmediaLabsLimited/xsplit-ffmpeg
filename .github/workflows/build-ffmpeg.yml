@@ -560,8 +560,6 @@ jobs:
             --disable-everything \
             --disable-ffplay \
             --disable-ffprobe \
-            --disable-docs \
-            --disable-iconv \
             --enable-nonfree \
             --enable-gpl \
             --enable-static \
