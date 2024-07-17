@@ -25,3 +25,6 @@
 [submodule "ffmpeg_sources/FFmpeg"]
 	path = ffmpeg_sources/FFmpeg
 	url = https://github.com/FFmpeg/FFmpeg
+[submodule "ffmpeg_sources/opus"]
+	path = ffmpeg_sources/opus
+	url = https://github.com/xiph/opus

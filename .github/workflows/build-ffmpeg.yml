@@ -268,13 +268,15 @@ jobs:
             diffutils
             git
             make
+            autoconf
+            automake
             pkg-config
             mingw-w64-ucrt-x86_64-binutils
             mingw-w64-ucrt-x86_64-cmake
             mingw-w64-ucrt-x86_64-gcc
             mingw-w64-ucrt-x86_64-onevpl
             mingw-w64-ucrt-x86_64-nasm
-            mingw-w64-ucrt-x86_64-opus
+#            mingw-w64-ucrt-x86_64-opus
 
       - name: Initialize Submodules
         # libx265 has issues when using the recursive method of the first checkout action
@@ -526,6 +528,8 @@ jobs:
             --extra-libs="-lpthread -lm" \
             --bindir="$root_path/ffmpeg_build/bin" \
             --disable-everything \
+            --disable-ffplay \
+            --disable-ffprobe \
             --enable-nonfree \
             --enable-gpl \
             --enable-static \
