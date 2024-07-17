@@ -338,7 +338,8 @@ jobs:
             ./configure \
             --prefix="$root_path/ffmpeg_build" \
             --bindir="$root_path/ffmpeg_build/bin" \
-            --enable-static
+            --enable-static \
+            --disable-shared
           echo "::endgroup::"
 
           echo "::group::make"
@@ -559,6 +560,8 @@ jobs:
             --disable-everything \
             --disable-ffplay \
             --disable-ffprobe \
+            --disable-docs \
+            --disable-iconv \
             --enable-nonfree \
             --enable-gpl \
             --enable-static \
