@@ -265,11 +265,13 @@ jobs:
           msystem: ucrt64
           update: true
           install: >-
+            autoconf
+            automake
+            build-essential            
+            libtool
             diffutils
             git
             make
-            autoconf
-            automake
             pkg-config
             mingw-w64-ucrt-x86_64-binutils
             mingw-w64-ucrt-x86_64-cmake
