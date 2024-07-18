@@ -105,7 +105,6 @@ jobs:
             shell: msys2 {0}
             cmake_generator: MSYS Makefiles
             ffmpeg_extras: >-
-              --extra-libs="-l:libwinpthread.a"
     runs-on: ${{ matrix.os }}
     defaults:
       run:
