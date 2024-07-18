@@ -105,6 +105,8 @@ jobs:
             shell: msys2 {0}
             cmake_generator: MSYS Makefiles
             ffmpeg_extras: >-
+              --disable-pthreads
+              --enable-w32threads
     runs-on: ${{ matrix.os }}
     defaults:
       run:
@@ -556,7 +558,6 @@ jobs:
             --extra-cflags="-I$root_path/ffmpeg_build/include" \
             --extra-ldflags="-L$root_path/ffmpeg_build/lib" \
             --extra-libs="-lstdc++ -lpthread -lm" \
-            --enable-pthreads \
             --bindir="$root_path/ffmpeg_build/bin" \
             --disable-everything \
             --disable-ffplay \
