@@ -556,9 +556,6 @@ jobs:
             --extra-cflags="-I$root_path/ffmpeg_build/include" \
             --extra-ldflags="-L$root_path/ffmpeg_build/lib" \
             --extra-libs="-lstdc++ -lpthread -lm" \
-            --extra-cflags="-static -static-libgcc" \
-            --extra-cxxflags="-static -static-libgcc -static-libstdc++" \
-            --extra-ldexeflags="-static -static-libgcc -static-libstdc++" \
             --enable-pthreads \
             --bindir="$root_path/ffmpeg_build/bin" \
             --disable-everything \
