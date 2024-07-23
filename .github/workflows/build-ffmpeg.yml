@@ -98,6 +98,7 @@ jobs:
             ffmpeg_extras: >-
               --enable-encoder=h264_videotoolbox,hevc_videotoolbox
               --enable-videotoolbox
+              --disable-neon
           - name: Windows-AMD64
             os_type: windows
             os: windows-2022
