@@ -105,7 +105,7 @@ jobs:
             shell: msys2 {0}
             cmake_generator: MSYS Makefiles
             ffmpeg_extras: >-
-              --extra-ldflags="-static" \
+              --extra-ldflags="-static"
 
     runs-on: ${{ matrix.os }}
     defaults:
