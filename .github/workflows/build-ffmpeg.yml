@@ -556,7 +556,7 @@ jobs:
             --extra-cflags="-I$root_path/ffmpeg_build/include" \
             --extra-ldflags="-L$root_path/ffmpeg_build/lib" \
             --extra-ldflags="-static" \
-            --extra-libs="-lstdc++ -lm" \
+            --extra-libs="-lm" \
             --bindir="$root_path/ffmpeg_build/bin" \
             --disable-everything \
             --disable-ffplay \
