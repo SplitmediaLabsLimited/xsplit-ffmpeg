@@ -511,7 +511,7 @@ jobs:
 #          echo "::endgroup::"
 
       - name: Get directory
-        run: ls -d ./ffmpeg_sources
+        run: ls ./ffmpeg_sources
 
       - name: ffmpeg
         env:
