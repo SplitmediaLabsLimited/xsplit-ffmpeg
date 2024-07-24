@@ -510,13 +510,10 @@ jobs:
 #          PREFIX=$root_path/ffmpeg_build make install
 #          echo "::endgroup::"
 
-      - name: Get directory
-        run: ls ./ffmpeg_sources
-
       - name: ffmpeg
         env:
           root_path: ${{ steps.root.outputs.root_path }}
-        working-directory: ffmpeg_sources/ffmpeg
+        working-directory: ffmpeg_sources/FFmpeg
         run: |
           echo "::group::configure options"
           ./configure --help || true  # this command has a non zero exit status, but we should continue anyway
