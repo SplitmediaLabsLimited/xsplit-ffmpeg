@@ -31,14 +31,9 @@ jobs:
             cmake_generator: Unix Makefiles
             ffmpeg_extras: >-
               --enable-amf
-              --enable-cuda
-              --enable-cuda_llvm
               --enable-encoder=h264_amf,hevc_amf,av1_amf
-              --enable-encoder=h264_nvenc,hevc_nvenc,av1_nvenc
               --enable-encoder=h264_vaapi,hevc_vaapi,av1_vaapi
               --enable-encoder=h264_v4l2m2m
-              --enable-ffnvcodec
-              --enable-nvenc
               --enable-v4l2_m2m
               --enable-vaapi
           - name: Linux-aarch64
@@ -50,14 +45,9 @@ jobs:
             host: aarch64-linux-gnu
             ffmpeg_extras: >-
               --enable-amf
-              --enable-cuda
-              --enable-cuda_llvm
               --enable-encoder=h264_amf,hevc_amf,av1_amf
-              --enable-encoder=h264_nvenc,hevc_nvenc,av1_nvenc
               --enable-encoder=h264_vaapi,hevc_vaapi,av1_vaapi
               --enable-encoder=h264_v4l2m2m
-              --enable-ffnvcodec
-              --enable-nvenc
               --enable-v4l2_m2m
               --enable-vaapi
           - name: Linux-ppc64le
@@ -69,14 +59,9 @@ jobs:
             host: powerpc64le-linux-gnu
             ffmpeg_extras: >-
               --enable-amf
-              --enable-cuda
-              --enable-cuda_llvm
               --enable-encoder=h264_amf,hevc_amf,av1_amf
-              --enable-encoder=h264_nvenc,hevc_nvenc,av1_nvenc
               --enable-encoder=h264_vaapi,hevc_vaapi,av1_vaapi
               --enable-encoder=h264_v4l2m2m
-              --enable-ffnvcodec
-              --enable-nvenc
               --enable-v4l2_m2m
               --enable-vaapi
           - name: Darwin-x86_64
