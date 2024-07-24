@@ -510,6 +510,9 @@ jobs:
 #          PREFIX=$root_path/ffmpeg_build make install
 #          echo "::endgroup::"
 
+      - name: Get directory
+        run: ls
+
       - name: ffmpeg
         env:
           root_path: ${{ steps.root.outputs.root_path }}
