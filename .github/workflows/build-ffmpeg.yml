@@ -314,6 +314,7 @@ jobs:
           root_path: ${{ steps.root.outputs.root_path }}
           CCPREFIX: ${{ steps.cross.outputs.CCPREFIX }}
         working-directory: ffmpeg_sources/opus
+        if: ${{ matrix.os_type != 'linux' }}
         run: |
           echo "::group::configure autogen"
           ./autogen.sh
