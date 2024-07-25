@@ -319,10 +319,30 @@ jobs:
           ./autogen.sh
           echo "::endgroup::"
 
+          echo "::group::configure extra flags for cross compilation"
+          extra_configure=""
+          if [[ ${{ matrix.os_type }} == "linux" && ${{ matrix.arch }} != "x86_64" ]]; then
+            extra_configure=$(cat <<- VAREOF
+              --host=${{ matrix.arch }}-${{ matrix.os_type }}
+              --cross-prefix=${CCPREFIX}
+          VAREOF
+          )
+          elif [[ ${{ matrix.os_type }} == "macos" && ${{ matrix.arch }} != "x86_64" ]]; then
+            export CC="clang"
+            export CFLAGS="${{ steps.cross.outputs.CFLAGS }}"
+            extra_configure=$(cat <<- VAREOF
+              --host=${{ matrix.arch }}-darwin
+          VAREOF
+          )
+          fi
+          echo "$extra_configure"
+          echo "::endgroup::"
+
           echo "::group::configure"
           PATH="$root_path/bin:$PATH" \
             PKG_CONFIG_PATH="$root_path/ffmpeg_build/lib/pkgconfig" \
             ./configure \
+            $extra_configure \
             --prefix="$root_path/ffmpeg_build" \
             --bindir="$root_path/ffmpeg_build/bin" \
             --enable-static \
