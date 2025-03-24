@@ -603,6 +603,7 @@ jobs:
             --enable-muxer=gif \
             --enable-muxer=image2 \
             --enable-muxer=rawvideo \
+            --enable-muxer=null \
             --enable-bsf=h264_mp4toannexb \
             --enable-bsf=aac_adtstoasc \
             --enable-parser=aac \
@@ -616,7 +617,11 @@ jobs:
             --enable-filter=format \
             --enable-filter=fps \
             --enable-filter=split \
+            --enable-filter=null \
+            --enable-filter=nullsrc \
+            --enable-filter=loudnorm \
             --enable-protocol=file \
+            --enable-protocol=pipe \
             --enable-libopus \
             --pkg-config=pkg-config \
             ${{ matrix.ffmpeg_extras }} \
